@@ -4,3 +4,5 @@ venv
 /save_error.txt
 **/logs
 .log
+.idea
+__pacache__
