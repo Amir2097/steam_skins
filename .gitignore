@@ -5,4 +5,4 @@ venv
 **/logs
 .log
 .idea
-__pacache__
+.__pacache__
