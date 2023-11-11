@@ -1,7 +1,7 @@
 import os
 import sqlalchemy as sq
 from dotenv import load_dotenv
-from sqlalchemy import Column, DateTime, Integer, String, func, ForeignKey
+from sqlalchemy import Column, DateTime, Integer, String, func, ForeignKey, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 
@@ -10,6 +10,7 @@ Base = declarative_base()
 
 
 class User(Base):
+
     __tablename__ = "user"
 
     id = Column(Integer, primary_key=True)
@@ -25,6 +26,7 @@ class User(Base):
 
 
 class Admin(Base):
+
     __tablename__ = "admin"
 
     id = Column(Integer, primary_key=True)
@@ -35,6 +37,157 @@ class Admin(Base):
     def __str__(self):
         return f'Admin: {self.access}'
 
+
+class Pistols(Base):
+
+    __tablename__ = "pistols"
+
+    id = Column(Integer, primary_key=True)
+    request_user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    full_name = Column(String(100))
+    url = Column(String(200))
+    BeforePrice = Column(Float)
+    PriceNow = Column(Float)
+    Discount = Column(Float)
+    from_site = Column(String(60))
+    user = relationship("User", lazy="joined")
+
+    def __repr__(self):
+        return f'Pistols: {self.full_name}, цена до {self.BeforePrice}, ' \
+               f'скидка {self.Discount}, цена сейчас {self.PriceNow}, сайт {self.from_site}.'
+
+
+class Pistols_gun(Base):
+
+    __tablename__ = "pistolsgun"
+
+    id = Column(Integer, primary_key=True)
+    request_user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    full_name = Column(String(100))
+    url = Column(String(200))
+    BeforePrice = Column(Float)
+    PriceNow = Column(Float)
+    Discount = Column(Float)
+    from_site = Column(String(60))
+    user = relationship("User", lazy="joined")
+
+    def __repr__(self):
+        return f'Pistolsgun: {self.full_name}, цена до {self.BeforePrice}, ' \
+               f'скидка {self.Discount}, цена сейчас {self.PriceNow}, сайт {self.from_site}.'
+
+
+class Rifles(Base):
+
+    __tablename__ = "rifles"
+
+    id = Column(Integer, primary_key=True)
+    request_user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    full_name = Column(String(100))
+    url = Column(String(200))
+    BeforePrice = Column(Float)
+    PriceNow = Column(Float)
+    Discount = Column(Float)
+    from_site = Column(String(60))
+    user = relationship("User", lazy="joined")
+
+    def __repr__(self):
+        return f'Rifles: {self.full_name}, цена до {self.BeforePrice}, ' \
+               f'скидка {self.Discount}, цена сейчас {self.PriceNow}, сайт {self.from_site}.'
+
+
+class Snipers(Base):
+
+    __tablename__ = "snipers"
+
+    id = Column(Integer, primary_key=True)
+    request_user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    full_name = Column(String(100))
+    url = Column(String(200))
+    BeforePrice = Column(Float)
+    PriceNow = Column(Float)
+    Discount = Column(Float)
+    from_site = Column(String(60))
+    user = relationship("User", lazy="joined")
+
+    def __repr__(self):
+        return f'Snipers: {self.full_name}, цена до {self.BeforePrice}, ' \
+               f'скидка {self.Discount}, цена сейчас {self.PriceNow}, сайт {self.from_site}.'
+
+
+class Shotguns(Base):
+
+    __tablename__ = "shotguns"
+
+    id = Column(Integer, primary_key=True)
+    request_user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    full_name = Column(String(100))
+    url = Column(String(200))
+    BeforePrice = Column(Float)
+    PriceNow = Column(Float)
+    Discount = Column(Float)
+    from_site = Column(String(60))
+    user = relationship("User", lazy="joined")
+
+    def __repr__(self):
+        return f'Shotguns: {self.full_name}, цена до {self.BeforePrice}, ' \
+               f'скидка {self.Discount}, цена сейчас {self.PriceNow}, сайт {self.from_site}.'
+
+
+class Machine_guns(Base):
+
+    __tablename__ = "machine_guns"
+
+    id = Column(Integer, primary_key=True)
+    request_user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    full_name = Column(String(100))
+    url = Column(String(200))
+    BeforePrice = Column(Float)
+    PriceNow = Column(Float)
+    Discount = Column(Float)
+    from_site = Column(String(60))
+    user = relationship("User", lazy="joined")
+
+    def __repr__(self):
+        return f'Machine_guns: {self.full_name}, цена до {self.BeforePrice}, ' \
+               f'скидка {self.Discount}, цена сейчас {self.PriceNow}, сайт {self.from_site}.'
+
+
+class Keys(Base):
+
+    __tablename__ = "keys"
+
+    id = Column(Integer, primary_key=True)
+    request_user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    full_name = Column(String(100))
+    url = Column(String(200))
+    BeforePrice = Column(Float)
+    PriceNow = Column(Float)
+    Discount = Column(Float)
+    from_site = Column(String(60))
+    user = relationship("User", lazy="joined")
+
+    def __repr__(self):
+        return f'Keys: {self.full_name}, цена до {self.BeforePrice}, ' \
+               f'скидка {self.Discount}, цена сейчас {self.PriceNow}, сайт {self.from_site}.'
+
+
+class Anothers(Base):
+
+    __tablename__ = "anothers"
+
+    id = Column(Integer, primary_key=True)
+    request_user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    full_name = Column(String(100))
+    url = Column(String(200))
+    BeforePrice = Column(Float)
+    PriceNow = Column(Float)
+    Discount = Column(Float)
+    from_site = Column(String(60))
+    user = relationship("User", lazy="joined")
+
+    def __repr__(self):
+        return f'Anothers: {self.full_name}, цена до {self.BeforePrice}, ' \
+               f'скидка {self.Discount}, цена сейчас {self.PriceNow}, сайт {self.from_site}.'
 
 # def create_tables(engine):
 #     Base.metadata.drop_all(engine)
