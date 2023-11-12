@@ -44,6 +44,7 @@ class Pistols(Base):
 
     id = Column(Integer, primary_key=True)
     request_user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    data_request = Column(DateTime(timezone=True), server_default=sq.func.now())
     full_name = Column(String(100))
     url = Column(String(200))
     BeforePrice = Column(Float)
@@ -63,6 +64,7 @@ class Pistols_gun(Base):
 
     id = Column(Integer, primary_key=True)
     request_user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    data_request = Column(DateTime(timezone=True), server_default=sq.func.now())
     full_name = Column(String(100))
     url = Column(String(200))
     BeforePrice = Column(Float)
@@ -82,6 +84,7 @@ class Rifles(Base):
 
     id = Column(Integer, primary_key=True)
     request_user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    data_request = Column(DateTime(timezone=True), server_default=sq.func.now())
     full_name = Column(String(100))
     url = Column(String(200))
     BeforePrice = Column(Float)
@@ -101,6 +104,7 @@ class Snipers(Base):
 
     id = Column(Integer, primary_key=True)
     request_user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    data_request = Column(DateTime(timezone=True), server_default=sq.func.now())
     full_name = Column(String(100))
     url = Column(String(200))
     BeforePrice = Column(Float)
@@ -120,6 +124,7 @@ class Shotguns(Base):
 
     id = Column(Integer, primary_key=True)
     request_user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    data_request = Column(DateTime(timezone=True), server_default=sq.func.now())
     full_name = Column(String(100))
     url = Column(String(200))
     BeforePrice = Column(Float)
@@ -139,6 +144,7 @@ class Machine_guns(Base):
 
     id = Column(Integer, primary_key=True)
     request_user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    data_request = Column(DateTime(timezone=True), server_default=sq.func.now())
     full_name = Column(String(100))
     url = Column(String(200))
     BeforePrice = Column(Float)
@@ -158,6 +164,7 @@ class Keys(Base):
 
     id = Column(Integer, primary_key=True)
     request_user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    data_request = Column(DateTime(timezone=True), server_default=sq.func.now())
     full_name = Column(String(100))
     url = Column(String(200))
     BeforePrice = Column(Float)
@@ -177,6 +184,7 @@ class Anothers(Base):
 
     id = Column(Integer, primary_key=True)
     request_user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    data_request = Column(DateTime(timezone=True), server_default=sq.func.now())
     full_name = Column(String(100))
     url = Column(String(200))
     BeforePrice = Column(Float)
@@ -189,9 +197,9 @@ class Anothers(Base):
         return f'Anothers: {self.full_name}, цена до {self.BeforePrice}, ' \
                f'скидка {self.Discount}, цена сейчас {self.PriceNow}, сайт {self.from_site}.'
 
-def create_tables(engine):
-    Base.metadata.drop_all(engine)
-    Base.metadata.create_all(engine)
+# def create_tables(engine):
+#     Base.metadata.drop_all(engine)
+#     Base.metadata.create_all(engine)
 
 
 DSN = f'postgresql+psycopg2://{os.getenv("DATABASE_USER")}:{os.getenv("DATABASE_PASSWORD")}' \
@@ -234,5 +242,4 @@ def remove_user(id_tg, full_name):
     else:
         pass
 
-create_tables(engine)
 

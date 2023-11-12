@@ -1,9 +1,8 @@
 from aiogram import types, F, Router
 from aiogram.types import Message, CallbackQuery
-from steam_test import steam_data, type_cs, cs_money_add
+from steam_test import type_cs, cs_money_add
 from aiogram.utils.markdown import hbold, hlink
-from models import Anothers, Pistols, Pistols_gun
-import models
+import models as mod
 import keyboard as kb
 import asyncio
 import json
@@ -30,148 +29,91 @@ async def help_handler(callback_query: CallbackQuery):
 
 @router.callback_query(F.data == "pistols")
 async def help_handler(callback_query: CallbackQuery):
-    await callback_query.message.answer('Пожалуйста подождите...')
-    user_id = models.session.query(models.User.id).filter(
-        models.User.id_tg == callback_query.from_user.id).first()[0]
-    cs_money_add(type_cs["Пистолеты"], user_id, models.Pistols)
-    await callback_query.message.answer(f"Успешное добавление Pistols в БД")
+    await callback_query.message.answer('Анализирую пистолеты на рынке CS.MONEY, ожидайте...')
+    user_id = mod.session.query(mod.User.id).filter(
+        mod.User.id_tg == callback_query.from_user.id).first()[0]
+    cs_money_add(type_cs["Пистолеты"], user_id, mod.Pistols)
+    await callback_query.message.answer(f"Успешное добавление пистолетов в БД")
 
 
 @router.callback_query(F.data == "pistolsgun")
 async def help_handler(callback_query: CallbackQuery):
-    await callback_query.message.answer('Пожалуйста подождите...')
-    steam_data(type_cs["Пистолеты-пулеметы"])
-
-    with open('result.json') as file:
-        data = json.load(file)
-
-    for index, item in enumerate(data):
-        card = f'{hlink(item.get("full_name"), item.get("3d"))}\n' \
-               f'{hbold("Скидка: ")}{item.get("Discount")}%\n' \
-               f'{hbold("Цена до: ")}{item.get("BeforePrice")} руб.\n' \
-               f'{hbold("Цена после: ")}{item.get("PriceNow")} руб. 🔥'
-
-        if index % 20 == 0:
-            await asyncio.sleep(3)
-
-        await callback_query.message.answer(card)
+    await callback_query.message.answer('Анализирую пистолеты-пулеметы на рынке CS.MONEY, ожидайте...')
+    user_id = mod.session.query(mod.User.id).filter(
+        mod.User.id_tg == callback_query.from_user.id).first()[0]
+    cs_money_add(type_cs["Пистолеты-пулеметы"], user_id, mod.Pistols_gun)
+    await callback_query.message.answer(f"Успешное добавление пистолетов-пулеметов в БД")
 
 
 @router.callback_query(F.data == "rifle")
 async def help_handler(callback_query: CallbackQuery):
-    await callback_query.message.answer('Пожалуйста подождите...')
-    steam_data(type_cs["Штурмовые винтовки"])
-
-    with open('result.json') as file:
-        data = json.load(file)
-
-    for index, item in enumerate(data):
-        card = f'{hlink(item.get("full_name"), item.get("3d"))}\n' \
-               f'{hbold("Скидка: ")}{item.get("Discount")}%\n' \
-               f'{hbold("Цена до: ")}{item.get("BeforePrice")} руб.\n' \
-               f'{hbold("Цена после: ")}{item.get("PriceNow")} руб. 🔥'
-
-        if index % 20 == 0:
-            await asyncio.sleep(3)
-
-        await callback_query.message.answer(card)
+    await callback_query.message.answer('Анализирую штурмовые винтовки на рынке CS.MONEY, ожидайте...')
+    user_id = mod.session.query(mod.User.id).filter(
+        mod.User.id_tg == callback_query.from_user.id).first()[0]
+    cs_money_add(type_cs["Штурмовые винтовки"], user_id, mod.Rifles)
+    await callback_query.message.answer(f"Успешное добавление штурмовых винтовок в БД")
 
 
 @router.callback_query(F.data == "sniper")
 async def help_handler(callback_query: CallbackQuery):
-    await callback_query.message.answer('Пожалуйста подождите...')
-    steam_data(type_cs["Снайперские винтовки"])
-
-    with open('result.json') as file:
-        data = json.load(file)
-
-    for index, item in enumerate(data):
-        card = f'{hlink(item.get("full_name"), item.get("3d"))}\n' \
-               f'{hbold("Скидка: ")}{item.get("Discount")}%\n' \
-               f'{hbold("Цена до: ")}{item.get("BeforePrice")} руб.\n' \
-               f'{hbold("Цена после: ")}{item.get("PriceNow")} руб. 🔥'
-
-        if index % 20 == 0:
-            await asyncio.sleep(3)
-
-        await callback_query.message.answer(card)
+    await callback_query.message.answer('Анализирую снайперские винтовки на рынке CS.MONEY, ожидайте...')
+    user_id = mod.session.query(mod.User.id).filter(
+        mod.User.id_tg == callback_query.from_user.id).first()[0]
+    cs_money_add(type_cs["Снайперские винтовки"], user_id, mod.Snipers)
+    await callback_query.message.answer(f"Успешное добавление снайперских винтовок в БД")
 
 
 @router.callback_query(F.data == "shotgun")
 async def help_handler(callback_query: CallbackQuery):
-    await callback_query.message.answer('Пожалуйста подождите...')
-    steam_data(type_cs["Дробовики"])
-
-    with open('result.json') as file:
-        data = json.load(file)
-
-    for index, item in enumerate(data):
-        card = f'{hlink(item.get("full_name"), item.get("3d"))}\n' \
-               f'{hbold("Скидка: ")}{item.get("Discount")}%\n' \
-               f'{hbold("Цена до: ")}{item.get("BeforePrice")} руб.\n' \
-               f'{hbold("Цена после: ")}{item.get("PriceNow")} руб. 🔥'
-
-        if index % 20 == 0:
-            await asyncio.sleep(3)
-
-        await callback_query.message.answer(card)
+    await callback_query.message.answer('Анализирую дробовики на рынке CS.MONEY, ожидайте...')
+    user_id = mod.session.query(mod.User.id).filter(
+        mod.User.id_tg == callback_query.from_user.id).first()[0]
+    cs_money_add(type_cs["Дробовики"], user_id, mod.Shotguns)
+    await callback_query.message.answer(f"Успешное добавление дробовиков в БД")
 
 
 @router.callback_query(F.data == "machine")
 async def help_handler(callback_query: CallbackQuery):
-    await callback_query.message.answer('Пожалуйста подождите...')
-    steam_data(type_cs["Пулеметы"])
-
-    with open('result.json') as file:
-        data = json.load(file)
-
-    for index, item in enumerate(data):
-        card = f'{hlink(item.get("full_name"), item.get("3d"))}\n' \
-               f'{hbold("Скидка: ")}{item.get("Discount")}%\n' \
-               f'{hbold("Цена до: ")}{item.get("BeforePrice")} руб.\n' \
-               f'{hbold("Цена после: ")}{item.get("PriceNow")} руб. 🔥'
-
-        if index % 20 == 0:
-            await asyncio.sleep(3)
-
-        await callback_query.message.answer(card)
+    await callback_query.message.answer('Анализирую пулеметы на рынке CS.MONEY, ожидайте...')
+    user_id = mod.session.query(mod.User.id).filter(
+        mod.User.id_tg == callback_query.from_user.id).first()[0]
+    cs_money_add(type_cs["Пулеметы"], user_id, mod.Machine_guns)
+    await callback_query.message.answer(f"Успешное добавление пулеметов в БД")
 
 
 @router.callback_query(F.data == "keys")
 async def help_handler(callback_query: CallbackQuery):
-    await callback_query.message.answer('Пожалуйста подождите...')
-    steam_data(type_cs["Ключи"])
-
-    with open('result.json') as file:
-        data = json.load(file)
-
-    for index, item in enumerate(data):
-        card = f'{hlink(item.get("full_name"), item.get("3d"))}\n' \
-               f'{hbold("Скидка: ")}{item.get("Discount")}%\n' \
-               f'{hbold("Цена до: ")}{item.get("BeforePrice")} руб.\n' \
-               f'{hbold("Цена после: ")}{item.get("PriceNow")} руб. 🔥'
-
-        if index % 20 == 0:
-            await asyncio.sleep(3)
-
-        await callback_query.message.answer(card)
+    await callback_query.message.answer('Анализирую ключи от кейсов на рынке CS.MONEY, ожидайте...')
+    user_id = mod.session.query(mod.User.id).filter(
+        mod.User.id_tg == callback_query.from_user.id).first()[0]
+    cs_money_add(type_cs["Ключи"], user_id, mod.Keys)
+    await callback_query.message.answer(f"Успешное добавление ключей в БД")
 
 
 @router.callback_query(F.data == "another")
 async def help_handler(callback_query: CallbackQuery):
-    await callback_query.message.answer('Пожалуйста подождите...')
-    steam_data(type_cs["Другие"])
+    await callback_query.message.answer('Анализирую остальное(другое) на рынке CS.MONEY, ожидайте...')
+    user_id = mod.session.query(mod.User.id).filter(
+        mod.User.id_tg == callback_query.from_user.id).first()[0]
+    cs_money_add(type_cs["Другие"], user_id, mod.Anothers)
+    await callback_query.message.answer(f"Успешное добавление остального в БД")
 
-    with open('result.json') as file:
-        data = json.load(file)
 
-    for index, item in enumerate(data):
-        card = f'{hlink(item.get("full_name"), item.get("3d"))}\n' \
-               f'{hbold("Скидка: ")}{item.get("Discount")}%\n' \
-               f'{hbold("Цена до: ")}{item.get("BeforePrice")} руб.\n' \
-               f'{hbold("Цена после: ")}{item.get("PriceNow")} руб. 🔥'
-
-        if index % 20 == 0:
-            await asyncio.sleep(3)
-
-        await callback_query.message.answer(card)
+# @router.callback_query(F.data == "another")
+# async def help_handler(callback_query: CallbackQuery):
+#     await callback_query.message.answer('Пожалуйста подождите...')
+#     steam_data(type_cs["Другие"])
+#
+#     with open('result.json') as file:
+#         data = json.load(file)
+#
+#     for index, item in enumerate(data):
+#         card = f'{hlink(item.get("full_name"), item.get("3d"))}\n' \
+#                f'{hbold("Скидка: ")}{item.get("Discount")}%\n' \
+#                f'{hbold("Цена до: ")}{item.get("BeforePrice")} руб.\n' \
+#                f'{hbold("Цена после: ")}{item.get("PriceNow")} руб. 🔥'
+#
+#         if index % 20 == 0:
+#             await asyncio.sleep(3)
+#
+#         await callback_query.message.answer(card)
