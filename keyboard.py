@@ -20,7 +20,7 @@ cs_sites = [
 cs_sites = InlineKeyboardMarkup(inline_keyboard=cs_sites)
 
 csmoney_gun = [
-    [InlineKeyboardButton(text="☑🔫 Пистолеты", callback_data="pistols"),
+    [InlineKeyboardButton(text="🔫 Пистолеты", callback_data="pistols"),
     InlineKeyboardButton(text="🅰️ Пистолеты-пулеметы", callback_data="pistolsgun")],
     [InlineKeyboardButton(text="⚠️ Штурмовые винтовки", callback_data="rifle"),
     InlineKeyboardButton(text="🔭 Снайперские винтовки", callback_data="sniper")],

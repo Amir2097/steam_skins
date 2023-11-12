@@ -1,7 +1,7 @@
 from aiogram import types, F, Router
 from aiogram.types import Message, CallbackQuery
 from aiogram.filters import Command
-from models import users_check, remove_user
+from models import users_check
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 import keyboard as kb

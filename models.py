@@ -214,8 +214,8 @@ session = Session()
 def users_check(id_tg, full_name):
     """
     The function of adding users to DB
-    1) id_tg - ID telegram users
-    2) full_name - full name users in telegram
+    :param id_tg - ID telegram users
+    :param full_name - full name users in telegram
     """
     user_verification = session.query(User.id).filter(User.id_tg == id_tg)
     if session.query(user_verification.exists()).scalar():
@@ -227,12 +227,10 @@ def users_check(id_tg, full_name):
         session.commit()
 
 
-def remove_user(id_tg, full_name):
+def remove_user(id_tg):
     """
     The function remove user from DB
     :param id_tg: ID telegram users
-    :param full_name: full name users in telegram
-    :return: delete user in BD
     """
     user_verification = session.query(User).filter(User.id_tg == id_tg)
     if session.query(user_verification.exists()).scalar():
