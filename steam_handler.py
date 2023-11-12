@@ -1,7 +1,9 @@
 from aiogram import types, F, Router
 from aiogram.types import Message, CallbackQuery
-from steam_test import steam_data, type_cs
+from steam_test import steam_data, type_cs, cs_money_add
 from aiogram.utils.markdown import hbold, hlink
+from models import Anothers, Pistols, Pistols_gun
+import models
 import keyboard as kb
 import asyncio
 import json
@@ -29,21 +31,10 @@ async def help_handler(callback_query: CallbackQuery):
 @router.callback_query(F.data == "pistols")
 async def help_handler(callback_query: CallbackQuery):
     await callback_query.message.answer('Пожалуйста подождите...')
-    steam_data(type_cs["Пистолеты"])
-
-    with open('result.json') as file:
-        data = json.load(file)
-
-    for index, item in enumerate(data):
-        card = f'{hlink(item.get("full_name"), item.get("3d"))}\n' \
-               f'{hbold("Скидка: ")}{item.get("Discount")}%\n' \
-               f'{hbold("Цена до: ")}{item.get("BeforePrice")} руб.\n' \
-               f'{hbold("Цена после: ")}{item.get("PriceNow")} руб. 🔥'
-
-        if index % 20 == 0:
-            await asyncio.sleep(3)
-
-        await callback_query.message.answer(card)
+    user_id = models.session.query(models.User.id).filter(
+        models.User.id_tg == callback_query.from_user.id).first()[0]
+    cs_money_add(type_cs["Пистолеты"], user_id, models.Pistols)
+    await callback_query.message.answer(f"Успешное добавление Pistols в БД")
 
 
 @router.callback_query(F.data == "pistolsgun")

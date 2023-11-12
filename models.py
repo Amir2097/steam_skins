@@ -189,9 +189,9 @@ class Anothers(Base):
         return f'Anothers: {self.full_name}, цена до {self.BeforePrice}, ' \
                f'скидка {self.Discount}, цена сейчас {self.PriceNow}, сайт {self.from_site}.'
 
-# def create_tables(engine):
-#     Base.metadata.drop_all(engine)
-#     Base.metadata.create_all(engine)
+def create_tables(engine):
+    Base.metadata.drop_all(engine)
+    Base.metadata.create_all(engine)
 
 
 DSN = f'postgresql+psycopg2://{os.getenv("DATABASE_USER")}:{os.getenv("DATABASE_PASSWORD")}' \
@@ -233,4 +233,6 @@ def remove_user(id_tg, full_name):
 
     else:
         pass
+
+create_tables(engine)
 
