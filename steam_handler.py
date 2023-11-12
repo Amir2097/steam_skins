@@ -32,8 +32,19 @@ async def help_handler(callback_query: CallbackQuery):
     await callback_query.message.answer('Анализирую пистолеты на рынке CS.MONEY, ожидайте...')
     user_id = mod.session.query(mod.User.id).filter(
         mod.User.id_tg == callback_query.from_user.id).first()[0]
+    del_pistols = mod.session.query(mod.Pistols).filter(mod.Pistols.request_user_id == user_id).all()
+    for pistol in del_pistols: # Удаление старых записей -> возможно доработка
+        mod.session.delete(pistol)
+        mod.session.commit()
     cs_money_add(type_cs["Пистолеты"], user_id, mod.Pistols)
+    new_pistols = mod.session.query(mod.Pistols).filter(mod.Pistols.request_user_id == user_id).all()
     await callback_query.message.answer(f"Успешное добавление пистолетов в БД")
+    for new_pistol in new_pistols:
+        card = f'{hlink(new_pistol.full_name, new_pistol.url)}\n' \
+               f'{hbold("Скидка: ")}{new_pistol.Discount}%\n' \
+               f'{hbold("Цена до: ")}{new_pistol.BeforePrice} руб.\n' \
+               f'{hbold("Цена после: ")}{new_pistol.PriceNow} руб. 🔥'
+        await callback_query.message.answer(card)
 
 
 @router.callback_query(F.data == "pistolsgun")
