@@ -15,7 +15,7 @@ iexit_kb = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="◀
 
 cs_sites = [
     [InlineKeyboardButton(text="🗡 CSMONEY", callback_data="csmoney"),
-    InlineKeyboardButton(text="🌠️ MARKETCSGO", callback_data="marketcsgo")]
+    InlineKeyboardButton(text="🌠️ Buff163", callback_data="buff")]
 ]
 cs_sites = InlineKeyboardMarkup(inline_keyboard=cs_sites)
 

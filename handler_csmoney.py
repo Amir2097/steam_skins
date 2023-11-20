@@ -6,6 +6,10 @@ import models as mod
 import keyboard as kb
 import asyncio
 import logging
+import os
+
+if not os.path.isdir("logs"):
+    os.mkdir("logs")
 
 router = Router()
 
@@ -56,11 +60,7 @@ async def help_handler(callback_query: CallbackQuery):
     await callback_query.message.answer('Анализирую пистолеты на рынке CS.MONEY, ожидайте...')
     user_id = mod.session.query(mod.User.id).filter(
         mod.User.id_tg == callback_query.from_user.id).first()[0]
-    del_pistols = mod.session.query(mod.Pistols).filter(mod.Pistols.request_user_id == user_id).all()
-    for pistol in del_pistols: # Удаление старых записей -> возможно доработка
-        mod.session.delete(pistol)
-        mod.session.commit()
-    csmoney_logger.info(f"Deleting old pistols from the DB")
+    mod.remove_skins(models=mod.Pistols, user_id=user_id)
     cs_money_add(type_cs["Пистолеты"], user_id, mod.Pistols)
     csmoney_logger.info(f"Adding new pistols to the DB")
     new_pistols = mod.session.query(mod.Pistols).filter(mod.Pistols.request_user_id == user_id).all()
