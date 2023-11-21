@@ -1,11 +1,11 @@
-import os
-import sqlalchemy as sq
-from dotenv import load_dotenv
 from sqlalchemy import Column, DateTime, Integer, String, func, ForeignKey, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
+from dotenv import load_dotenv
 from typing import Type
+import sqlalchemy as sq
 import logging
+import os
 
 if not os.path.isdir("logs"):
     os.mkdir("logs")
@@ -21,7 +21,6 @@ models_formatter = logging.Formatter("%(name)s %(asctime)s %(levelname)s %(messa
 
 models_handler.setFormatter(models_formatter)
 models_logger.addHandler(models_handler)
-
 
 
 class User(Base):
@@ -238,7 +237,7 @@ def users_check(id_tg, full_name):
     """
     user_verification = session.query(User.id).filter(User.id_tg == id_tg)
     if session.query(user_verification.exists()).scalar():
-        models_logger.info(f"This user {id_tg} already exists")
+        models_logger.info(f"This user id_tg - {id_tg} already exists")
         pass
     else:
         new_user = User(id_tg=id_tg,
@@ -254,11 +253,11 @@ def remove_user(id_tg):
     :param id_tg: ID telegram users
     """
     user_verification = session.query(User).filter(User.id_tg == id_tg)
-    models_logger.info(f"This user - {id_tg} is available in the database - {user_verification}")
+    models_logger.info(f"This user id_tg - {id_tg} is available in the database - {user_verification}")
     if session.query(user_verification.exists()).scalar():
         session.delete(user_verification.one())
         session.commit()
-        models_logger.info(f"Deleting a user: id - {id_tg}")
+        models_logger.info(f"Deleting a user: id_tg - {id_tg}")
 
     else:
         pass

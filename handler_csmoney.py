@@ -48,6 +48,34 @@ async def help_handler(callback_query: CallbackQuery):
     )
 
 
+async def simple_receive(callback_query: CallbackQuery, models: mod.ORM_MODEL_CLS, user_id: int):
+    """
+    An approximate function for processing skins from a database
+    param:
+    - callback_query: CallbackQuery from telegram
+    - models: guns ORM MODELS from DB(import models.py)
+    user_id: ID from User
+    return: card - weapon skin card
+    """
+    skins_db = mod.session.query(models).filter(models.request_user_id == user_id).all()
+    score = 0
+    for skins in skins_db:
+        card = f'{hlink(skins.full_name, skins.url)}\n' \
+               f'{hbold("Скидка: ")}{skins.Discount}%\n' \
+               f'{hbold("Цена до: ")}{skins.BeforePrice} руб.\n' \
+               f'{hbold("Цена после: ")}{skins.PriceNow} руб. 🔥'
+        score += 1
+
+        if score % 20 == 0:
+            await asyncio.sleep(3)
+
+        await callback_query.message.answer(card)
+    csmoney_logger.info(
+        f"User: {callback_query.from_user.full_name, callback_query.from_user.id} "
+        f"adding and presented new {score} {models.__tablename__}"
+    )
+
+
 @router.callback_query(F.data == "pistols")
 async def help_handler(callback_query: CallbackQuery):
     """
@@ -61,25 +89,9 @@ async def help_handler(callback_query: CallbackQuery):
     user_id = mod.session.query(mod.User.id).filter(
         mod.User.id_tg == callback_query.from_user.id).first()[0]
     mod.remove_skins(models=mod.Pistols, user_id=user_id)
-    cs_money_add(type_cs["Пистолеты"], user_id, mod.Pistols)
+    cs_money_add(type_data=type_cs["Пистолеты"], user_id=user_id, models=mod.Pistols)
     csmoney_logger.info(f"Adding new pistols to the DB")
-    new_pistols = mod.session.query(mod.Pistols).filter(mod.Pistols.request_user_id == user_id).all()
-    score = 0
-    for new_pistol in new_pistols:
-        card = f'{hlink(new_pistol.full_name, new_pistol.url)}\n' \
-               f'{hbold("Скидка: ")}{new_pistol.Discount}%\n' \
-               f'{hbold("Цена до: ")}{new_pistol.BeforePrice} руб.\n' \
-               f'{hbold("Цена после: ")}{new_pistol.PriceNow} руб. 🔥'
-        score += 1
-
-        if score % 20 == 0:
-            await asyncio.sleep(3)
-
-        await callback_query.message.answer(card)
-    csmoney_logger.info(
-        f"User: {callback_query.from_user.full_name, callback_query.from_user.id} "
-        f"adding and presented new {score} pistols"
-    )
+    await simple_receive(callback_query=callback_query, models=mod.Pistols, user_id=user_id)
 
 
 @router.callback_query(F.data == "pistolsgun")
