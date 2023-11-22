@@ -1,15 +1,15 @@
-from aiogram import types, F, Router
-from aiogram.types import Message, CallbackQuery
+from aiogram import F, Router
+from aiogram.types import CallbackQuery
 from sites_pars import type_cs, cs_money_add
 from aiogram.utils.markdown import hbold, hlink
-import models as mod
+from database import models as mod
 import keyboard as kb
 import asyncio
 import logging
 import os
 
-if not os.path.isdir("logs"):
-    os.mkdir("logs")
+if not os.path.isdir("../logs"):
+    os.mkdir("../logs")
 
 router = Router()
 
@@ -96,7 +96,7 @@ async def simple_receive(callback_query: CallbackQuery, models: mod.ORM_MODEL_CL
 @router.callback_query(lambda c: F.text in skins_csmoney)
 async def help_handler(callback_query: CallbackQuery):
     """
-    The function of displaying the necessary information by PISTOLS
+    The function of displaying the necessary information by guns
     - deleting old data from the database
     - adding new data to the database (cs_money_add())
     - presenting the desired options to the user
@@ -110,7 +110,7 @@ async def help_handler(callback_query: CallbackQuery):
 
     await callback_query.message.answer(f"Анализирую {guns_name} на рынке CS.MONEY, ожидайте...")
 
-    user_id = mod.session.query(mod.User.id).filter(
+    user_id: int = mod.session.query(mod.User.id).filter(
         mod.User.id_tg == callback_query.from_user.id).first()[0]
     mod.remove_skins(models=guns_model, user_id=user_id)
     csmoney_logger.info(f"Deleting {guns_model.__tablename__} from the DB")

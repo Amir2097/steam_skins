@@ -1,6 +1,6 @@
 from fake_useragent import UserAgent
 from bs4 import BeautifulSoup
-from models import session, ORM_MODEL_CLS
+from database.models import session, ORM_MODEL_CLS
 import requests
 import logging
 import os

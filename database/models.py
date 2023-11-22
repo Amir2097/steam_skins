@@ -7,8 +7,8 @@ import sqlalchemy as sq
 import logging
 import os
 
-if not os.path.isdir("logs"):
-    os.mkdir("logs")
+if not os.path.isdir("../logs"):
+    os.mkdir("../logs")
 
 load_dotenv()
 Base = declarative_base()

@@ -1,8 +1,7 @@
-from aiogram import types, F, Router
+from aiogram import F, Router
 from aiogram.types import Message, CallbackQuery
 from aiogram.filters import Command
-from models import users_check
-from aiogram.fsm.context import FSMContext
+from database.models import users_check
 from aiogram.fsm.state import State, StatesGroup
 import keyboard as kb
 
